@@ -44,7 +44,14 @@ in_stock [icon: archive] {
   current_quantity int
 }
 
-
+payment [icon: credit-card] {
+  payment_id int [pk]
+  order_id int
+  payment_method varchar 
+  transaction_id varchar
+  payment_status varchar 
+  paid_at timestamp
+}
 
 
 customer.customer_id < order.customer_id
@@ -56,3 +63,4 @@ order.order_id < sold_item.order_id
 customer.customer_id < sold_item.customer_id
 
 product.product_id - in_stock.product_id
+order.order_id - payment.order_id
