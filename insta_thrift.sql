@@ -1,66 +1,68 @@
-customer [icon: user] {
-  customer_id int [pk]
-  customer_name varchar(50)
-  customer_email varchar(50)
-  customer_mobile_no varchar(15)
-  customer_address varchar(255) 
+customer[icon:customer_url]{
+  customer_id int pk
+  email_id varchar(50)
+  Name varchar(50)
+  Password varchar(50)
+  verification_token varchar(50)
+  customer_address varchar(50)
+  created_at timestamp
+  updated_at timestamp
 }
 
-product [icon: package] {
-  product_id int [pk]
+Product[icon:product_url]{
+  product_id int pk
   product_name varchar(50)
-  color varchar(12)
-  size varchar(10)
-  price int
-  is_thrift boolean
-  is_handmade boolean
+  color varchar(50)
+  size varchar(50)
+  type enum[Handmade,Thrift]
+  price decimal(10,2)
+  condition text 
+  created_at
+  updated_at
 }
 
-order [icon: shopping-cart] {
-  order_id int [pk]
-  customer_id int [ref: > customer.customer_id] 
-  order_date timestamp
-  total_amount int
+Inventory[icon:inverntory_url]{
+  inventory_id int pk
+  product_id int fk 
+  qunatity int 
 }
 
-order_items {
-  order_item_id int [pk]
-  order_id int [ref: > order.order_id]
-  product_id int [ref: > product.product_id] // Add this ref
-  quantity int
-  price int
+Orders[icon:order_url]{
+  order_id int pk
+  customer_id int fk
+  total_price decimal
+  status enum['pending','processing','shipped','delivered','cancelled']
+  created_at timestamp
+  updated_at timestamp
 }
 
-sold_item [icon: check-circle] {
-  sold_id int [pk]
-  product_id int
-  order_id int
-  customer_id int
-  sale_price int
+Order_items[icon:order_item_url]{
+  item_id int pk
+  order_id int fk
+  product_id int fk 
+  qunatity int 
+  price_at_purchase decimal(10,2)
+  created_at timestamp
+  updated_at timestamp
 }
 
-in_stock [icon: archive] {
-  product_id int [pk]
-  current_quantity int
-}
-
-payment [icon: credit-card] {
-  payment_id int [pk]
-  order_id int
-  payment_method varchar 
-  transaction_id varchar
-  payment_status varchar 
+payment[icon:payment_url]{
+  payment_id int pk
+  order_id int fk
+  payment_method enum['credit_Card','UPI']
+  transaction_id varchar(50)
+  amount decimal (10,2)
+  status enum['pending','completed','failed','refunded']
   paid_at timestamp
 }
 
-
-customer.customer_id < order.customer_id
-
-order.order_id < order_items.order_id
-product.product_id < order_items.product_id
-product.product_id < sold_item.product_id
-order.order_id < sold_item.order_id
-customer.customer_id < sold_item.customer_id
-
-product.product_id - in_stock.product_id
-order.order_id - payment.order_id
+//product-inventry
+Product.product_id < Inventory.product_id
+//product-order_items
+Product.product_id > Order_items.product_id
+//Orders-Order_items
+Orders.order_id < Order_items.order_id
+//Orders - customer
+Orders.customer_id  > customer.customer_id
+//Order - payment
+Orders.order_id < payment.order_id
