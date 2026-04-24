@@ -1,2 +1,2 @@
 # Instagram-Thrift-Creator-Store-_-SQL
-<img width="860" height="1149" alt="image" src="https://github.com/user-attachments/assets/70b31e13-14cd-44a6-9c71-adb69558fa0d" />
+<img width="2901" height="2858" alt="image" src="https://github.com/user-attachments/assets/8d27f209-0f5e-4f44-ad9e-b728793b3d70" />
